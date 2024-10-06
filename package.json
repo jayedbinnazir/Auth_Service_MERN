@@ -1,0 +1,27 @@
+{
+  "name": "auth_service",
+  "version": "1.0.0",
+  "description": "a user managment service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=dev nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jayedbinnazir/Auth_Service_MERN.git"
+  },
+  "keywords": [
+    "Auth_Service"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jayedbinnazir/Auth_Service_MERN/issues"
+  },
+  "homepage": "https://github.com/jayedbinnazir/Auth_Service_MERN#readme",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.7"
+  }
+}
