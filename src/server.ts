@@ -3,6 +3,7 @@ function Greet(username: string) {
       name: "Jayed",
    };
 
+   console.log("Jayed");
    const name = user["name"];
 
    return username + name;
