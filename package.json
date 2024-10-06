@@ -21,7 +21,11 @@
   },
   "homepage": "https://github.com/jayedbinnazir/Auth_Service_MERN#readme",
   "dependencies": {
-    "cross-env": "^7.0.3",
-    "nodemon": "^3.1.7"
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.6.2"
   }
 }
