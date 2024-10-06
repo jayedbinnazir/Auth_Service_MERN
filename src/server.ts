@@ -1,6 +1,11 @@
-function Greet(name: string) {
-   console.log(` ${name}`);
-   return 0;
+function Greet(username: string) {
+   const user = {
+      name: "Jayed",
+   };
+
+   const name = user.name;
+
+   return username + name;
 }
 
 Greet("Jayed");
