@@ -1,12 +1,6 @@
-function Greet(username: string) {
-   const user = {
-      name: "Jayed",
-   };
+import { Config } from "./config/index";
 
-   console.log("Jayed Bin nazir");
-   const name = user.name;
-
-   return username + name;
-}
-
-Greet("Jayed");
+console.log({
+   PORT: Config.PORT,
+   NODE_ENV: Config.NODE_ENV,
+});

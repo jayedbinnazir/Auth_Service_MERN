@@ -5,7 +5,7 @@
    "main": "index.js",
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "dev": "cross-env NODE_ENV=dev nodemon ./src/server.js",
+      "dev": "cross-env NODE_ENV=dev nodemon ./dist/server.js",
       "format:check": "npx prettier . --check",
       "format:fix": "npx prettier . --write",
       "lint:check": "npx eslint -c src/eslint.config.mjs .",
@@ -32,7 +32,8 @@
    },
    "homepage": "https://github.com/jayedbinnazir/Auth_Service_MERN#readme",
    "dependencies": {
-      "cross-env": "^7.0.3"
+      "cross-env": "^7.0.3",
+      "dotenv": "^16.4.5"
    },
    "devDependencies": {
       "@eslint/js": "^9.12.0",
