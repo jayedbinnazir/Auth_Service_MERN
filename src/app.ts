@@ -1,12 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import logger from "./config/logger";
-import CreateError, { HttpError } from "http-errors";
+import { HttpError } from "http-errors";
 
 const app = express();
 
-app.get("/", async (req, res, next: NextFunction) => {
-   const err = CreateError(401, "unauthorized user");
-   return next(err);
+app.get("/", async (req, res) => {
+   // const err = CreateError(401, "unauthorized user");
+   // return next(err);
    res.send("auth-service");
 });
 
