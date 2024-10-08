@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import logger from "./config/logger";
 import { HttpError } from "http-errors";
+import authRouter from "./routes/auth";
 
 const app = express();
 
@@ -9,6 +10,8 @@ app.get("/", async (req, res) => {
    // return next(err);
    res.send("auth-service ");
 });
+
+app.use("/auth", authRouter);
 
 //error handler
 

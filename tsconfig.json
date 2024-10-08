@@ -112,13 +112,14 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-  "src/**/*",
+  "src/**/*.ts",
   "jest.config.ts",
-  "app.spec.ts"
+  
 ],
 "exclude": [
   "dist",
-  "node_modules"
+  "node_modules",
+  
 ]
 
   
