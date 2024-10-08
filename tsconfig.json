@@ -114,6 +114,7 @@
   "include": [
   "src/**/*.ts",
   "jest.config.ts",
+  "test/**/*.spec.ts"
   
 ],
 "exclude": [
