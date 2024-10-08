@@ -7,7 +7,7 @@ const app = express();
 app.get("/", async (req, res) => {
    // const err = CreateError(401, "unauthorized user");
    // return next(err);
-   res.send("auth-service");
+   res.send("auth-service ");
 });
 
 //error handler

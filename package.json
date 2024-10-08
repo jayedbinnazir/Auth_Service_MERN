@@ -4,7 +4,7 @@
    "description": "a user managment service",
    "main": "index.js",
    "scripts": {
-      "dev": "cross-env NODE_ENV=dev nodemon ./src/server.ts",
+      "dev": "cross-env NODE_ENV=dev nodemon --legacy-watch ./src/server.ts",
       "format:check": "npx prettier . --check",
       "format:fix": "npx prettier . --write",
       "lint:check": "npx eslint -c src/eslint.config.mjs .",
