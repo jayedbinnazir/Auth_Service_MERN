@@ -121,7 +121,10 @@
   "dist",
   "node_modules",
   
-]
+],
+
+"emitDecoratorMetadata": true,
+"experimentalDecorators": true,
 
   
  
