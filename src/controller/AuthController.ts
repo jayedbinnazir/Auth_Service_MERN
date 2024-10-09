@@ -31,7 +31,10 @@ export class AuthController {
             password,
          });
 
-         this.logger.info("user has been registerd", { id: user.id });
+         this.logger.info("user has been registerd", {
+            id: user.id,
+            role: user.role,
+         });
 
          res.status(201).json({
             id: user.id,
