@@ -54,6 +54,7 @@ describe("POST  /auth/register", () => {
             .send(userdata);
 
          //assert
+
          expect(response.headers["content-type"]).toEqual(
             expect.stringContaining("json"),
          );
@@ -80,6 +81,27 @@ describe("POST  /auth/register", () => {
          expect(users[0].lastName).toBe(userdata.lastName);
          expect(users[0].email).toBe(userdata.email);
          expect(users[0].password).toBe(userdata.password);
+      });
+
+      it("should return registered newUser id ", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "jayed.freelance@gmail.com",
+            password: "Jayed015",
+         };
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+
+         //assert
+         const usersRepository = connection.getRepository(Users);
+         const users = await usersRepository.find();
+         expect(response.body).toHaveProperty("id");
+         expect(typeof response.body.id).toBe("number");
+         expect(users[0]?.id).toBe(response.body.id);
       });
    });
 });
