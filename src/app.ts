@@ -6,19 +6,21 @@ import authRouter from "./routes/auth";
 
 const app = express();
 
-app.get("/", async (req, res) => {
-   // const err = CreateError(401, "unauthorized user");
-   // return next(err);
+app.use(express.json());
+
+// Root route
+app.get("/", (req, res) => {
    res.send("auth-service ");
 });
 
+// Auth routes
 app.use("/auth", authRouter);
 
-//error handler
-
+// Error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-   logger.error(err.message);
+   logger.error(err); // Log the full error object for detailed information
+
    const statusCode = err.statusCode || 500;
 
    res.status(statusCode).json({
@@ -26,8 +28,8 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
          {
             type: err.name,
             msg: err.message,
-            location: "",
-            path: "",
+            location: "", // Could be used for request-related location info, if applicable
+            path: req.path, // Provide the path for better context
          },
       ],
    });
