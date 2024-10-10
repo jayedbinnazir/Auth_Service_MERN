@@ -2,12 +2,14 @@ import { UserService } from "services/userService";
 import { RegisterRequest } from "../types";
 import { NextFunction, Response } from "express";
 import { Logger } from "winston";
+import createHttpError from "http-errors";
 
 export class AuthController {
    userService: UserService;
 
    constructor(
       userService: UserService,
+      // eslint-disable-next-line no-unused-vars
       private logger: Logger,
    ) {
       this.userService = userService;
@@ -22,6 +24,12 @@ export class AuthController {
          email,
          password: "********",
       });
+
+      if (!email) {
+         const err = createHttpError(400, "Email is required !");
+         next(err);
+         return;
+      }
 
       try {
          const user = await this.userService.create({

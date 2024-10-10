@@ -172,4 +172,24 @@ describe("POST  /auth/register", () => {
          expect(response.statusCode).toBe(400);
       });
    });
+
+   describe("If some Fields are missing", () => {
+      it("should return 400 status code if email is missing", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+         //assert
+         expect(response.statusCode).toBe(400);
+      });
+   });
 });
