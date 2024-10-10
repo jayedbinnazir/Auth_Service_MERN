@@ -190,6 +190,138 @@ describe("POST  /auth/register", () => {
             .send(userdata);
          //assert
          expect(response.statusCode).toBe(400);
+         const userRepository = connection.getRepository(Users);
+         const users = await userRepository.find();
+         expect(users).toHaveLength(0);
+      });
+      it("should return 400 status code if firstName is missing", async () => {
+         //arrange
+         const userdata = {
+            firstName: "",
+            lastName: "Bin Nazir",
+            email: "jayed.freelance@gmail.com",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+         //assert
+         expect(response.statusCode).toBe(400);
+         const userRepository = connection.getRepository(Users);
+         const users = await userRepository.find();
+         expect(users).toHaveLength(0);
+      });
+      it("should return 400 status code if lastName is missing", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "",
+            email: "jayed.freelance@gmail.com",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+         //assert
+         expect(response.statusCode).toBe(400);
+         const userRepository = connection.getRepository(Users);
+         const users = await userRepository.find();
+         expect(users).toHaveLength(0);
+      });
+      it("should return 400 status code if password is missing", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "jayed.freelance@gmail.com",
+            password: "",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+         //assert
+         expect(response.statusCode).toBe(400);
+         const userRepository = connection.getRepository(Users);
+         const users = await userRepository.find();
+         expect(users).toHaveLength(0);
+      });
+   });
+
+   //sanitize
+   describe("Fields are not in Proper Format", () => {
+      it("should trim the email field", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: " jayed.freelance@gmail.com",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+
+         const userRepository = connection.getRepository(Users);
+
+         const users = await userRepository.find();
+
+         //assert
+         expect(users[0].email).toBe(userdata.email.trim());
+      });
+
+      it("should return 400 statuscode if not valid email address", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "jayed.freelancegmail.com",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+
+         //assert
+         expect(response.statusCode).toBe(400);
+         const userRepository = connection.getRepository(Users);
+         const users = await userRepository.find();
+         expect(users).toHaveLength(0);
+      });
+      it("should return 400 statuscode if password length is less than 8 characters", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "jayed.freelance@gmail.com",
+            password: "Jayed01",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+
+         //assert
+         expect(response.statusCode).toBe(400);
+         const userRepository = connection.getRepository(Users);
+         const users = await userRepository.find();
+         expect(users).toHaveLength(0);
       });
    });
 });
