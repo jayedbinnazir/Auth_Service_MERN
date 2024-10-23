@@ -118,7 +118,7 @@
   "src/**/*.ts",
   "jest.config.ts",
   "test/**/*.spec.ts",
-  "validators/**/*.ts"
+  "validators/**/*.ts",
   
 ],
 "exclude": [

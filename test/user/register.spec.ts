@@ -3,9 +3,10 @@ import app from "../../src/app";
 import request from "supertest";
 import { Users } from "../../src/entity/User";
 import { AppDataSource } from "../../src/config/data-source";
-import { truncateTable } from "../utils";
+import { isJwt, truncateTable } from "../utils";
 import bcrypt from "bcrypt";
 import { ROLE } from "../../src/consts";
+import { RefreshToken } from "../../src/entity/RefreshToken";
 
 describe("POST  /auth/register", () => {
    let connection: DataSource;
@@ -170,6 +171,74 @@ describe("POST  /auth/register", () => {
 
          //assert
          expect(response.statusCode).toBe(400);
+      });
+
+      it("should return a access token and refresh token inside a cookie", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "jayed.freelance@gmail.com",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+
+         //assert
+
+         let accessToken = null;
+         let refreshToken = null;
+
+         interface HeadersWithCookies {
+            "set-cookie"?: string[];
+         }
+
+         const headers = response.headers as unknown as HeadersWithCookies;
+         const cookies = headers["set-cookie"] || [];
+         cookies.forEach((cookie) => {
+            if (cookie.startsWith("accessToken=")) {
+               accessToken = cookie.split(";")[0].split("=")[1];
+            }
+            if (cookie.startsWith("refreshToken=")) {
+               refreshToken = cookie.split(";")[0].split("=")[1];
+            }
+         });
+
+         expect(accessToken).not.toBeNull();
+         expect(refreshToken).not.toBeNull();
+         expect(isJwt(accessToken)).toBeTruthy();
+         expect(isJwt(refreshToken)).toBeTruthy();
+      });
+      it("should store the refresh token in the database", async () => {
+         //arrange
+         const userdata = {
+            firstName: "Jayed",
+            lastName: "Bin Nazir",
+            email: "jayed.freelance@gmail.com",
+            password: "Jayed015",
+            role: ROLE.CUSTOMER,
+         };
+
+         //act
+         const response = await request(app)
+            .post("/auth/register")
+            .send(userdata);
+         //assert
+         const refreshTokenRepository = connection.getRepository(RefreshToken);
+         // const refResshTokens = await refreshTokenRepository.find();
+
+         const tokens = await refreshTokenRepository
+            .createQueryBuilder("refreshToken")
+            .where("refreshToken.userId=:userId", {
+               userId: (response.body as Record<string, string>).id,
+            })
+            .getMany();
+
+         expect(tokens).toHaveLength(1);
       });
    });
 

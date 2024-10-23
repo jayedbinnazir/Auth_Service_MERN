@@ -2,8 +2,9 @@ import { UserService } from "services/userService";
 import { RegisterRequest } from "../types";
 import { NextFunction, Response } from "express";
 import { Logger } from "winston";
-import createHttpError from "http-errors";
 import { validationResult } from "express-validator"; // Correct named import
+import { JwtPayload } from "jsonwebtoken";
+import { TokenService } from "services/TokenService";
 
 export class AuthController {
    userService: UserService;
@@ -12,6 +13,8 @@ export class AuthController {
       userService: UserService,
       // eslint-disable-next-line no-unused-vars
       private logger: Logger,
+      // eslint-disable-next-line no-unused-vars
+      private tokenService: TokenService,
    ) {
       this.userService = userService;
    }
@@ -33,12 +36,6 @@ export class AuthController {
          password: "********",
       });
 
-      // if (!email) {
-      //    const err = createHttpError(400, "Email is required !");
-      //    next(err);
-      //    return;
-      // }
-
       try {
          const user = await this.userService.create({
             firstName,
@@ -50,6 +47,36 @@ export class AuthController {
          this.logger.info("user has been registerd", {
             id: user.id,
             role: user.role,
+         });
+
+         const payLoad: JwtPayload = {
+            sub: String(user.id),
+            role: user.role,
+         };
+
+         const accessToken = this.tokenService.generateAccessToken(payLoad);
+
+         //persists the refresh token
+
+         const newRefreshToken =
+            await this.tokenService.persistRefreshToken(user);
+
+         const refreshToken = this.tokenService.generateRefreshToken({
+            ...payLoad,
+            id: String(newRefreshToken.id),
+         });
+
+         res.cookie("accessToken", accessToken, {
+            domain: "localhost",
+            sameSite: "strict",
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60, //1h
+         });
+         res.cookie("refreshToken", refreshToken, {
+            domain: "localhost",
+            sameSite: "strict",
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 365,
          });
 
          res.status(201).json({
